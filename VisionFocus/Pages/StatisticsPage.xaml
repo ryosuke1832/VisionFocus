@@ -44,8 +44,9 @@
                        HorizontalOptions="Center" />
 
                 <VerticalStackLayout x:Name="ChartsContainer"
-                                     Spacing="30">
-                    <!-- Multiple ScottPlot charts will be added here dynamically -->
+                                     Spacing="30"
+                                     HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="Start">
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

@@ -120,11 +120,13 @@ public partial class StatisticsPage : ContentPage
                         alerts[i] = a;
                     }
                 }
+                var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
+                double density = displayInfo.Density;
 
                 var plot = new MauiPlot
                 {
-                    HeightRequest = 350,
-                    WidthRequest = 650,
+                    HeightRequest = 350 / density,
+                    WidthRequest = 650 / density,
                     Margin = new Thickness(0, 10)
                 };
 
@@ -132,7 +134,14 @@ public partial class StatisticsPage : ContentPage
                 plot.Plot.Title(Path.GetFileNameWithoutExtension(file));
                 plot.Plot.XLabel("Minutes");
                 plot.Plot.YLabel("Alert Count");
-                plot.Plot.Axes.SetLimitsY(0, alerts.Max() + 1);
+                double maxAlert = alerts.Length > 0 && alerts.Max() > 0 ? alerts.Max() : 2;
+                plot.Plot.Axes.SetLimitsY(0, maxAlert + 0.5);
+                if (time.Length > 0)
+                {
+                    plot.Plot.Axes.SetLimitsX(time.Min(), time.Max());
+                }
+                plot.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#E0E0E0");
+                plot.Plot.Layout.Frameless();
                 plot.Refresh();
 
                 ChartsContainer.Children.Add(plot);
