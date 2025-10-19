@@ -25,12 +25,12 @@ namespace VisionFocus.Tests.Models
             string[] parts = csv.Split(',');
 
             // Assert
-            Assert.That(parts.Length, Is.EqualTo(5)); // 正しいフィールド数
-            Assert.That(DateTime.TryParse(parts[0], out _), Is.True); // 日付が解析可能
-            Assert.That(TimeSpan.TryParse(parts[1], out _), Is.True); // 時刻が解析可能
-            Assert.That(parts[2], Is.EqualTo("Science")); // 科目が一致
-            Assert.That(parts[3], Is.EqualTo("60")); // 時間が一致
-            Assert.That(parts[4], Is.EqualTo("3")); // アラート数が一致
+            Assert.That(parts.Length, Is.EqualTo(5)); 
+            Assert.That(DateTime.TryParse(parts[0], out _), Is.True); 
+            Assert.That(TimeSpan.TryParse(parts[1], out _), Is.True); 
+            Assert.That(parts[2], Is.EqualTo("Science")); 
+            Assert.That(parts[3], Is.EqualTo("60")); 
+            Assert.That(parts[4], Is.EqualTo("3")); 
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace VisionFocus.Tests.Models
         public void FromCsvString_ShouldReturnNull_WhenFieldCountIsWrong()
         {
             // Arrange
-            string csvLine = "2025-10-16,09:15:00,Math"; // フィールド不足
+            string csvLine = "2025-10-16,09:15:00,Math"; 
 
             // Act
             var result = SessionSummary.FromCsvString(csvLine);
