@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisionFocus.HistoryPage"
+             Title="History">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Padding="0,0,0,20">
+            <Button Grid.Column="0"
+                    Text="←"
+                    Clicked="OnBackClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                    FontSize="32"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0" />
+        </Grid>
+
+        <!-- Table Scroll Area -->
+        <ScrollView Grid.Row="1">
+            <CollectionView x:Name="SessionCollectionView">
+                <CollectionView.Header>
+                    <Grid Padding="10,5" ColumnDefinitions="*,*,*,*,*"
+                          BackgroundColor="{AppThemeBinding Light=#e6e6e6, Dark=#333333}">
+                        <Label Text="Date" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Start Time" FontAttributes="Bold" />
+                        <Label Grid.Column="2" Text="Subject" FontAttributes="Bold" />
+                        <Label Grid.Column="3" Text="Duration (min)" FontAttributes="Bold" />
+                        <Label Grid.Column="4" Text="Alerts" FontAttributes="Bold" />
+                    </Grid>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10,5" ColumnDefinitions="*,*,*,*,*"
+                              BackgroundColor="{AppThemeBinding Light=#fafafa, Dark=#222222}">
+                            <Label Text="{Binding Date, StringFormat='{0:dd-MM-yyyy}'}" />
+                            <Label Grid.Column="1" Text="{Binding StartTime, StringFormat='{0:hh\\:mm\\:ss}'}" />
+                            <Label Grid.Column="2" Text="{Binding Subject}" />
+                            <Label Grid.Column="3" Text="{Binding SessionDurationMinutes}" />
+                            <Label Grid.Column="4" Text="{Binding TotalAlertCount}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

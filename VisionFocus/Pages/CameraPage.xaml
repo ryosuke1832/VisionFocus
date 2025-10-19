@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VisionFocus.CameraPage"
+             Title="SessionMode">
+
+    <Grid RowDefinitions="Auto, *, Auto, Auto" Padding="0">
+        <!-- Header Area -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Padding="20,20,20,10">
+            <!-- Back Button (Left) -->
+            <Button x:Name="BackButton"
+                    Grid.Column="0"
+                    Text="←"
+                    Clicked="OnBackClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                    FontSize="32"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    Margin="0" />
+
+            <!-- Info Area (Right) -->
+            <VerticalStackLayout Grid.Column="2" 
+                               Spacing="5"
+                               HorizontalOptions="End"
+                               VerticalOptions="Start">
+                <!-- Subject Picker -->
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                    <Label Text="Subject:"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                           FontSize="16"
+                           VerticalOptions="Center" />
+                    <Picker x:Name="SubjectPicker"
+                            FontSize="16"
+                            WidthRequest="150"
+                            HorizontalOptions="End"
+                            SelectedIndexChanged="OnSubjectChanged" />
+                </HorizontalStackLayout>
+
+                <Label x:Name="TimerLabel"
+                       Text="25:00"
+                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="End" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Camera Preview -->
+        <Border Grid.Row="1"
+                BackgroundColor="Black"
+                StrokeThickness="0"
+                Margin="20,0,20,0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+            <Image x:Name="CameraPreview"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill" />
+        </Border>
+
+        <!-- Log Display Area -->
+        <Border Grid.Row="2"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}"
+                StrokeThickness="1"
+                Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                Margin="20,10,20,10"
+                HeightRequest="150">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+            <ScrollView x:Name="LogScrollView">
+                <VerticalStackLayout x:Name="LogContainer"
+                                   Padding="10"
+                                   Spacing="5" />
+            </ScrollView>
+        </Border>
+
+        <!-- Control Buttons Area -->
+        <Grid Grid.Row="3" Padding="20,0,20,20">
+            <!-- Start Button (Red Circle) -->
+            <Button x:Name="StartButton"
+                    Text="Start"
+                    Clicked="OnStartClicked"
+                    BackgroundColor="#F44336"
+                    TextColor="White"
+                    WidthRequest="100"
+                    HeightRequest="100"
+                    CornerRadius="50"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            <!-- Control Buttons (Pause and Stop) - Hidden initially -->
+            <HorizontalStackLayout x:Name="ControlButtons"
+                                 IsVisible="False"
+                                 Spacing="30"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <Button x:Name="PauseButton"
+                        Text="⏸"
+                        Clicked="OnPauseClicked"
+                        BackgroundColor="#FF9800"
+                        TextColor="White"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        CornerRadius="40"
+                        FontSize="32" />
+
+                <Button x:Name="StopButton"
+                        Text="⏹"
+                        Clicked="OnStopClicked"
+                        BackgroundColor="#757575"
+                        TextColor="White"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        CornerRadius="40"
+                        FontSize="32" />
+            </HorizontalStackLayout>
+
+            <!-- Debug Mode Controls (Bottom Right) -->
+            <VerticalStackLayout HorizontalOptions="End"
+                               VerticalOptions="End"
+                               Spacing="10">
+                <!-- Debug Mode Toggle -->
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Debug Mode:"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                           FontSize="14"
+                           VerticalOptions="Center" />
+                    <Switch x:Name="DebugModeSwitch"
+                            Toggled="OnDebugModeToggled"
+                            VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Eye State Toggle (Visible only in Debug Mode) -->
+                <HorizontalStackLayout x:Name="EyeStateToggleContainer"
+                                     IsVisible="False"
+                                     Spacing="10">
+                    <Label Text="Eye State:"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                           FontSize="14"
+                           VerticalOptions="Center" />
+                    <HorizontalStackLayout Spacing="5">
+                        <RadioButton x:Name="ClosedRadioButton"
+                                   Content="Closed"
+                                   IsChecked="True"
+                                   CheckedChanged="OnEyeStateRadioChanged"
+                                   GroupName="EyeState" />
+                        <RadioButton x:Name="OpenRadioButton"
+                                   Content="Open"
+                                   CheckedChanged="OnEyeStateRadioChanged"
+                                   GroupName="EyeState" />
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
