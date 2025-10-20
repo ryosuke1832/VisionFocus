@@ -1,4 +1,3 @@
-using System.Runtime.ConstrainedExecution;
 using Microsoft.Maui.Controls;
 using ScottPlot.Maui;
 using VisionFocus.Services;
@@ -20,12 +19,13 @@ public partial class StatisticsPage : ContentPage
         DatePickerFilter.MaximumDate = DateTime.Today;
     }
 
+    // Handles navigation back to the previous page
     private async void OnBackClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
     }
 
-    // ? Reuse logic from CameraPage
+    // Reuse logic from SessionPage for loading subjects
     private void LoadSubjects()
     {
         try
@@ -46,21 +46,24 @@ public partial class StatisticsPage : ContentPage
         }
     }
 
+    // Triggered when user changes the selected subject
     private void OnSubjectChanged(object sender, EventArgs e)
     {
         if (SubjectPicker.SelectedItem is string subject)
         {
             _selectedSubject = subject;
-            LoadChartsForSubjectAndDate();
+            LoadChartsForSubjectAndDate(); // Refresh charts based on new selection
         }
     }
 
+    // Triggered when user selects a new date from the DatePicker
     private void OnDateSelected(object sender, DateChangedEventArgs e)
     {
         _selectedDate = e.NewDate;
-        LoadChartsForSubjectAndDate();
+        LoadChartsForSubjectAndDate(); // Refresh charts based on new selection
     }
 
+    // Loads and plots alert data for the selected subject and date
     private void LoadChartsForSubjectAndDate()
     {
         ChartsContainer.Children.Clear();
@@ -70,6 +73,7 @@ public partial class StatisticsPage : ContentPage
 
         try
         {
+            // Find all CSV session files that match the selected subject and date
             var files = SessionDataService.GetAllSessionDetailFiles()
                 .Where(f =>
                 {
@@ -90,6 +94,7 @@ public partial class StatisticsPage : ContentPage
                 })
                 .ToList();
 
+            // Show message if no session data is available
             if (files.Count == 0)
             {
                 ChartsContainer.Children.Add(new Label
@@ -101,6 +106,7 @@ public partial class StatisticsPage : ContentPage
                 return;
             }
 
+            // Process and plot data for each matching file
             foreach (var file in files)
             {
                 var filePath = Path.Combine(SessionDataService.EachDataFolderPath, file);
@@ -120,28 +126,27 @@ public partial class StatisticsPage : ContentPage
                         alerts[i] = a;
                     }
                 }
-                var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
-                double density = displayInfo.Density;
 
+                // Create a new plot for the session
                 var plot = new MauiPlot
                 {
-                    HeightRequest = 350 / density,
-                    WidthRequest = 650 / density,
+                    HeightRequest = 350,
+                    WidthRequest = 650,
                     Margin = new Thickness(0, 10)
                 };
 
+                // Plot alert data over time
                 plot.Plot.Add.Scatter(time, alerts, color: ScottPlot.Colors.Blue);
+
+                // Add titles and axis labels
                 plot.Plot.Title(Path.GetFileNameWithoutExtension(file));
                 plot.Plot.XLabel("Minutes");
                 plot.Plot.YLabel("Alert Count");
-                double maxAlert = alerts.Length > 0 && alerts.Max() > 0 ? alerts.Max() : 2;
-                plot.Plot.Axes.SetLimitsY(0, maxAlert + 0.5);
-                if (time.Length > 0)
-                {
-                    plot.Plot.Axes.SetLimitsX(time.Min(), time.Max());
-                }
-                plot.Plot.Grid.MajorLineColor = ScottPlot.Color.FromHex("#E0E0E0");
-                plot.Plot.Layout.Frameless();
+
+                // Set Y-axis range dynamically based on alert values
+                plot.Plot.Axes.SetLimitsY(0, alerts.Max() + 1);
+
+                // Render and display the chart
                 plot.Refresh();
 
                 ChartsContainer.Children.Add(plot);

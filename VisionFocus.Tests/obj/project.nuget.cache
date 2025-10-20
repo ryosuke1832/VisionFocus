@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WxiJLq/w+VA=",
+  "dgSpecHash": "M4zz5zmkunY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ryosuke yamamoto\\source\\repos\\VisionFocus.Tests\\VisionFocus.Tests.csproj",
+  "projectFilePath": "C:\\Users\\ryosuke yamamoto\\source\\repos\\VisionFocus_assignment\\VisionFocus.Tests\\VisionFocus.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ryosuke yamamoto\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\ryosuke yamamoto\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
