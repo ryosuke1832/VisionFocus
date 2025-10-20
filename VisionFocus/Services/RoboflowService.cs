@@ -55,6 +55,7 @@ namespace VisionFocus.Services
                 System.Diagnostics.Debug.WriteLine($"   Response time: {responseTime:F0}ms");
                 System.Diagnostics.Debug.WriteLine($"   Status code: {response.StatusCode}");
 
+
                 response.EnsureSuccessStatusCode();
 
                 // Read response content
